@@ -6,6 +6,8 @@ import {
 } from "@material-ui/core";
 import React from "react";
 
+import styles from "./RadioGroup.module.scss";
+
 export type RadioOption = {
   value: any;
   label: string;
@@ -37,6 +39,7 @@ export default function RadioGroup({
       >
         {options.map((option) => (
           <FormControlLabel
+            className={styles.radioOption}
             value={option.value}
             control={<Radio disabled={option.isDisabled} color="primary" />}
             label={option.label}
