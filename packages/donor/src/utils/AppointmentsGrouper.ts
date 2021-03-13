@@ -1,5 +1,8 @@
-import { AvailableAppointment, Hospital } from "@zm-blood-components/common";
-import * as DateUtils from "./DateUtil";
+import {
+  AvailableAppointment,
+  Hospital,
+  DateUtils,
+} from "@zm-blood-components/common";
 import * as _ from "lodash";
 
 type DonationDay = {
@@ -30,7 +33,9 @@ export function groupDonationDays(
 
       return res;
     })
-    .sortBy((donationDay) => new Date(donationDay.day).getTime())
+    .sortBy(
+      (donationDay) => donationDay.donationSlots[0].donationStartTimeMillis
+    )
     .value();
 }
 

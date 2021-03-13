@@ -1,9 +1,5 @@
 import React from "react";
-import {
-  BloodType,
-  LocaleUtils,
-  SelectOption,
-} from "@zm-blood-components/common";
+import { BloodType, BloodTypeUtils } from "@zm-blood-components/common";
 import Button from "../../components/basic/Button";
 import Input from "../../components/basic/Input";
 import Select from "../../components/basic/Select";
@@ -24,6 +20,7 @@ interface ExtendedSignupScreenProps {
   phoneNumber: ExtendedSingupField<string>;
   bloodType: ExtendedSingupField<BloodType | "">;
   onSave: () => void;
+  onSignOut: () => void;
 }
 
 export default function ExtendedSignupScreen({
@@ -32,6 +29,7 @@ export default function ExtendedSignupScreen({
   phoneNumber,
   bloodType,
   onSave,
+  onSignOut,
 }: ExtendedSignupScreenProps) {
   let firstNameErrorMessage: string = "";
   let lastNameErrorMessage: string = "";
@@ -49,18 +47,6 @@ export default function ExtendedSignupScreen({
         ? "השם המלא ארוך מ20 תווים"
         : "שם המשפחה ארוך מדי";
   }
-
-  let bloodTypeOptions: SelectOption<BloodType | "">[] = Object.values(
-    BloodType
-  ).map((type, index) => {
-    return {
-      key: "ExtendedSignupScreen-" + index + type,
-      value: type,
-      label: LocaleUtils.getBloodTypeTranslation(BloodType[type]),
-    };
-  });
-
-  bloodTypeOptions.unshift({ key: "undefined", value: "", label: "בחר" });
 
   return (
     <ZMScreen title={"סיום הרשמה"}>
@@ -94,7 +80,7 @@ export default function ExtendedSignupScreen({
           onChange={bloodType.onChange}
           label="סוג דם"
           isValid={bloodType.isValid}
-          options={bloodTypeOptions}
+          options={BloodTypeUtils.getBloodTypeSelectOptionsWithDefault("בחר")}
           errorMessage={bloodType.isValid ? undefined : "נא לבחור סוג דם"}
         />
         <Button
@@ -105,6 +91,9 @@ export default function ExtendedSignupScreen({
           )}
           isFullWidth
         />
+        <br />
+        <br />
+        <Button onClick={onSignOut} title={"התנתק"} isCentered />
       </div>
     </ZMScreen>
   );

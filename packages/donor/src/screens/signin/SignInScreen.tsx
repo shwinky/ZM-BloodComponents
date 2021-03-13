@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import Button from "../../components/basic/Button";
+import Button, { ButtonVariant } from "../../components/basic/Button";
 import Logo from "../logo/Logo";
 import styles from "../register/RegisterScreen.module.scss";
 import myStyles from "./SignInScreen.module.scss";
-import Input from "../../components/basic/Input";
+import Input, { InputVariant } from "../../components/basic/Input";
 
 import classNames from "classnames";
 
@@ -15,7 +15,7 @@ interface SignInScreenProps {
     password: string,
     emailError: (error: string) => void,
     passwordError: (error: string) => void
-  ) => void;
+  ) => Promise<boolean>;
 }
 
 export default function SignInScreen(props: SignInScreenProps) {
@@ -23,9 +23,19 @@ export default function SignInScreen(props: SignInScreenProps) {
   const [password, setPassword] = useState("");
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
-  const signIn = () => {
-    props.onSignInWithEmail(email, password, setEmailError, setPasswordError);
+  const signIn = async () => {
+    setIsLoading(true);
+    const success = await props.onSignInWithEmail(
+      email,
+      password,
+      setEmailError,
+      setPasswordError
+    );
+    if (!success) {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -39,8 +49,9 @@ export default function SignInScreen(props: SignInScreenProps) {
           setEmailError("");
         }}
         value={email}
+        type={"email"}
         label={`דוא"\ל`}
-        variant="filled"
+        variant={InputVariant.filled}
         errorMessage={emailError}
       />
       <Input
@@ -52,14 +63,20 @@ export default function SignInScreen(props: SignInScreenProps) {
         }}
         value={password}
         label="ססמא"
-        variant="filled"
+        variant={InputVariant.filled}
         errorMessage={passwordError}
+        onKeyPress={(event) => {
+          if (event.key === "Enter") {
+            signIn();
+          }
+        }}
       />
       <div className={styles.screenSection}>
         <Button
           className={styles.signinButton}
           title="התחבר"
           onClick={signIn}
+          isLoading={isLoading}
         />
       </div>
       <div
@@ -72,20 +89,18 @@ export default function SignInScreen(props: SignInScreenProps) {
           className={classNames(myStyles.resetPasswordButton)}
           title="איפוס סיסמה"
           onClick={props.onResetPassword}
-          variant="text"
+          variant={ButtonVariant.text}
         />
       </div>
 
-      <div className={styles.alreadyRegisteredContainer}>
+      <div className={styles.notRegisteredContainer}>
         <Button
           className={styles.connectButton}
           title="הרשמה"
           onClick={props.onRegister}
-          variant="text"
+          variant={ButtonVariant.text}
         />
-        <span className={styles.alreadyRegisteredTitle}>
-          עדיין לא רשום כתורם?
-        </span>
+        <span className={styles.notRegisteredTitle}>עדיין לא רשום כתורם?</span>
       </div>
     </div>
   );

@@ -1,9 +1,9 @@
 import firebase from "firebase/app";
 import "firebase/auth";
-import { firebaseConfig, LoginStatus } from "@zm-blood-components/common";
+import { getFirebaseConfig, LoginStatus } from "@zm-blood-components/common";
 
 export function initFirebase() {
-  firebase.initializeApp(firebaseConfig);
+  firebase.initializeApp(getFirebaseConfig());
 }
 
 export function registerAuthChange(

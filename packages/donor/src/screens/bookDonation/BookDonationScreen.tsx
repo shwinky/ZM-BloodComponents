@@ -4,6 +4,7 @@ import {
   AvailableAppointment,
   Hospital,
   HospitalUtils,
+  DateUtils,
 } from "@zm-blood-components/common";
 import {
   DonationSlot,
@@ -11,15 +12,14 @@ import {
 } from "../../utils/AppointmentsGrouper";
 import LastDonationDateHeader from "../../components/LastDonationDateHeader";
 import BookDonationEntriesGroup from "../../components/BookDonationEntriesGroup";
-import { DateDisplayFormat, ToWeekDayString } from "../../utils/DateUtil";
 import Select from "../../components/basic/Select";
 import Text from "../../components/basic/Text";
 import Spinner from "../../components/basic/Spinner";
 import ZMScreen from "../../components/basic/ZMScreen";
 
 interface BookDonationScreenProps {
-  lastDonation: Date;
-  earliestNextDonationDate: Date;
+  lastDonation?: Date;
+  earliestNextDonationDate?: Date;
   availableAppointments: AvailableAppointment[];
   isFetching: boolean;
   firstName: string;
@@ -71,9 +71,10 @@ export default function BookDonationScreen({
         {sortedDonationDays.map((donationDay) => (
           <BookDonationEntriesGroup
             key={donationDay.day}
-            title={`${ToWeekDayString(donationDay.day, DateDisplayFormat)}, ${
-              donationDay.day
-            }`}
+            title={`${DateUtils.ToWeekDayString(
+              donationDay.day,
+              DateUtils.DateDisplayFormat
+            )}, ${donationDay.day}`}
             donationSlots={donationDay.donationSlots}
             onSlotSelected={onSlotSelected}
           />

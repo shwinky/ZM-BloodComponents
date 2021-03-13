@@ -4,9 +4,9 @@ import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
 dayjs.extend(customParseFormat);
 
-export type ParsableDateValue = Date | string | number;
+type ParsableDateValue = Date | string | number;
 
-export const DateDisplayFormat = "D/M/YYYY";
+export const DateDisplayFormat = "DD/MM/YYYY";
 
 export function ToDateString(date: ParsableDateValue, format?: string) {
   return dayjs(date, format).format(DateDisplayFormat);

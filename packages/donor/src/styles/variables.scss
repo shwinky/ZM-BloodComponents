@@ -5,6 +5,7 @@
   --color-secondary: #347d8d;
   --color-tertiary: #a5d262;
   --color-light-grey: #e7ecef;
+  --color-mid-grey: #5a5a5a;
   --color-black: black;
   --color-white: white;
 
@@ -23,12 +24,12 @@
 
 //fonts--------------------------------------------------------
 :root {
-  --font-family-titles: "David Libre", serif;
+  --font-family-titles: "Rubik", serif;
   --font-title-weight-normal: 400;
   --font-title-weight-bold: 500;
   --font-title-weight-bolder: 700;
 
-  --font-family-content: "Arimo", sans-serif;
+  --font-family-content: "Rubik", serif;
   --font-content-weight-normal: 400;
   --font-content-weight-bold: 700;
 
@@ -61,6 +62,14 @@
   --layout-distance-small: 10px;
   --layout-distance-normal: 15px;
   --layout-distance-large: 20px;
+  --layout-distance-xl: 50px;
+  --layout-distance-xxl: 100px;
+
+  --text-direction: ltr;
+
+  // this affects the "Input component" when "type == email",
+  // TODO: set the value to "start" when the "Text-direction is "ltr".
+  --input-email-text-align: end;
 }
 
 //other styling rules------------------------------------------
