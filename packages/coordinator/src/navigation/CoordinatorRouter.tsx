@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+import styles from "./CoordinatorRouter.module.scss";
 import LoadingScreen from "../screens/loading/LoadingScreen";
 import { Route, Switch, Redirect } from "react-router-dom";
 import { CoordinatorScreen } from "./CoordinatorScreen";
@@ -11,6 +12,7 @@ import {
 } from "../firebase/FirebaseInitializer";
 import CoordinatorHeaderContainer from "../components/Header/CoordinatorHeaderContainer";
 import ManageAppointmentsScreenContainer from "../screens/manageAppointmentsScreen/ManageAppointmentsScreenContainer";
+import SearchDonorsScreenContainer from "../screens/serchDonorsScreen/SearchDonorsScreenContainer";
 
 export default function CoordinatorRouter() {
   const [loginStatus, setLoginStatus] = useState(LoginStatus.UNKNOWN);
@@ -35,7 +37,9 @@ export default function CoordinatorRouter() {
         <Route exact path={"/" + CoordinatorScreen.SCHEDULED_APPOINTMENTS}>
           <ManageAppointmentsScreenContainer />
         </Route>
-        <Route exact path={"/" + CoordinatorScreen.DONORS}></Route>
+        <Route exact path={"/" + CoordinatorScreen.DONORS}>
+          <SearchDonorsScreenContainer />
+        </Route>
         <Route exact path={["/" + CoordinatorScreen.ADD_APPOINTMENTS, "*"]}>
           <AddAppointmentsScreenContainer />
         </Route>
@@ -51,7 +55,7 @@ export default function CoordinatorRouter() {
       <CoordinatorHeaderContainer
         showSignOutButton={loginStatus === LoginStatus.LOGGED_IN}
       />
-      {content}
+      <div className={styles.content}>{content}</div>
     </>
   );
 }

@@ -5,7 +5,6 @@ import {
   FormControl,
   makeStyles,
 } from "@material-ui/core";
-import React from "react";
 
 type SelectVariant = "standard" | "filled" | "outlined";
 
@@ -69,7 +68,9 @@ export default function Select<T>({
         variant={variant}
       >
         {options.map(({ key, label }) => (
-          <option key={key} value={key} label={label} />
+          <option key={key} value={key}>
+            {label}
+          </option>
         ))}
       </NativeSelect>
       <FormHelperText>{errorMessage}</FormHelperText>

@@ -1,4 +1,3 @@
-import React from "react";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import {
   AppBar,
@@ -73,7 +72,7 @@ export default function ButtonAppBar({
                 aria-label="menu"
                 onClick={() => history.push("/" + MainNavigationKeys.MyProfile)}
               >
-                <img style={{ width: 25 }} src={profileIcon} />
+                <img style={{ width: 25 }} src={profileIcon} alt={"Profile"} />
               </IconButton>
             )}
           </Grid>

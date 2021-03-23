@@ -112,3 +112,10 @@ export interface GetCoordinatorAppointmentsResponse {
   appointments: AppointmentApiEntry[];
   donorsInAppointments: Donor[];
 }
+
+export const GetDonorsFunctionName = "getDonors";
+export interface GetDonorsRequest {}
+
+export interface GetDonorsResponse {
+  donors: Donor[];
+}

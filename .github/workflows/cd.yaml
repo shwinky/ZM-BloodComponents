@@ -4,65 +4,82 @@ on:
   push:
     branches:
       - master
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Commit to deploy to STG"
+        required: false
 
 jobs:
-  coordinator_hosting_qa:
-    name: Coordinator Staging Deployment
+  prettier:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Install Prettier
+        run: npm i prettier
+      - name: Run prettier
+        run: npx prettier --check .
+
+  staging_deployment:
+    strategy:
+      matrix:
+        app: ["donor", "coordinator"]
+      fail-fast: true
+    name: ${{ matrix.app }} staging deployment
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+
       - uses: actions/cache@v2
         with:
           path: "**/node_modules"
           key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
+
       - name: Install Dependencies
         run: yarn install
+
+      - name: Test Common
+        run: yarn workspace @zm-blood-components/common test
+
+      - name: Build Common
+        run: yarn workspace @zm-blood-components/common build
+
+      - name: Bump tag version (dry run)
+        id: bumpVersion
+        uses: anothrNick/github-tag-action@1.26.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          WITH_V: true
+          DEFAULT_BUMP: patch
+          DRY_RUN: true
+
+      - name: Set tag before build
+        run: echo "REACT_APP_VERSION=${{ steps.bumpVersion.outputs.new_tag }}" >> "$GITHUB_ENV"
+
+      - name: Build ${{ matrix.app }}
+        run: yarn workspace @zm-blood-components/${{ matrix.app }} build
+
       - name: Deploy to Firebase Hosting
         uses: w9jds/firebase-action@master
         with:
-          args: deploy --only hosting:coordinator -P staging
+          args: deploy --only hosting:${{ matrix.app }} -P staging
         env:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
-  donor_hosting_qa:
-    name: Donor Staging Deployment
+
+  version_bump:
+    name: Git Version Bump
+    needs: [staging_deployment]
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-      - uses: actions/cache@v2
+      - uses: actions/checkout@v2
         with:
-          path: "**/node_modules"
-          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
-      - name: Install Dependencies
-        run: yarn install
-      - name: Deploy to Firebase Hosting
-        uses: w9jds/firebase-action@master
-        with:
-          args: deploy --only hosting:donor -P staging
+          fetch-depth: "0"
+      - name: Bump version and push tag
+        uses: anothrNick/github-tag-action@1.26.0
         env:
-          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
-  functions_deployent_qa:
-    name: Functions Staging Deployment
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-      - uses: actions/cache@v2
-        with:
-          path: "**/node_modules"
-          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
-      - name: Install Dependencies
-        run: yarn install
-      - name: Write Test Service Account Key
-        uses: DamianReeves/write-file-action@v1.0
-        with:
-          path: ./test-service-account-key.json
-          contents: ${{ secrets.TEST_SERVICE_ACCOUNT }}
-          write-mode: overwrite
-      - name: Deploy to Firebase Functions
-        uses: w9jds/firebase-action@master
-        with:
-          args: deploy --only functions -P staging
-        env:
-          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          WITH_V: true
+          DEFAULT_BUMP: patch

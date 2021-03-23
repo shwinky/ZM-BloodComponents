@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import styles from "./AddAppointmentsForm.module.scss";
 import Select from "../../components/Select";
 import {
@@ -9,6 +9,7 @@ import {
 import Button from "../../components/Button";
 import DatePicker from "../../components/DatePicker";
 import TimePicker from "../../components/TimePicker";
+import HeaderSection from "../../components/HeaderSection";
 
 const slotOptions: SelectOption<number>[] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(
   (n) => ({
@@ -27,23 +28,27 @@ interface AddAppointmentsFormProps {
 }
 
 export default function AddAppointmentsForm(props: AddAppointmentsFormProps) {
-  const [hospital, setHospital] = useState<Hospital | "">(
-    Hospital.TEL_HASHOMER
-  );
+  const [hospital, setHospital] = useState<Hospital | "">("");
   const [date, setDate] = useState<Date | null>(getInitialDate());
+  const [hour, setHour] = useState<Date | null>(getInitialDate());
   const [slots, setSlots] = useState(1);
 
   const isButtonDisable = () => !(hospital && date && slots);
 
   const onSave = () => {
-    if (!date || !hospital) {
+    if (!date || !hour || !hospital) {
       return;
     }
-    props.addSlotsRequest(hospital, date, slots);
+    // Populate date with hour
+    const result = new Date(date);
+    result.setHours(hour.getHours());
+    result.setMinutes(hour.getMinutes());
+
+    props.addSlotsRequest(hospital, result, slots);
   };
 
   return (
-    <div className={styles.component}>
+    <HeaderSection className={styles.component}>
       <Select
         className={styles.field}
         id={"hospital"}
@@ -61,21 +66,21 @@ export default function AddAppointmentsForm(props: AddAppointmentsFormProps) {
       />
       <TimePicker
         className={styles.field}
-        value={date}
-        onChange={setDate}
+        value={hour}
+        onChange={setHour}
         label={"שעה"}
       />
       <Select
         className={styles.field}
         id={"donations_count"}
-        label={"מספר תורים"}
+        label={"מספר עמדות"}
         options={slotOptions}
         onChange={setSlots}
         value={slots}
       />
 
       <Button onClick={onSave} title="הוספה" isDisabled={isButtonDisable()} />
-    </div>
+    </HeaderSection>
   );
 }
 

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import styles from "./CoordinatorSigninScreen.module.scss";
 import Button from "../../components/Button";
 import Input from "../../components/Input";
@@ -31,7 +31,7 @@ export default function CoordinatorSignInScreen(props: SignInScreenProps) {
           setEmailError("");
         }}
         value={email}
-        label={`דוא"\ל`}
+        label={`דוא"ל`}
         variant="filled"
         errorMessage={emailError}
       />
