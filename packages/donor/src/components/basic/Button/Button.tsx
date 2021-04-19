@@ -11,7 +11,7 @@ export enum ButtonVariant {
 
 export type ButtonProps = {
   title: string;
-  onClick: () => void;
+  onClick?: () => void;
   /** Text - clickable text, Outlined - Inside out, or Contained (Default) */
   variant?: ButtonVariant;
   className?: string;
