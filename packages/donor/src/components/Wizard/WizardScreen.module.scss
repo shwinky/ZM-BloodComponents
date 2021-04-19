@@ -1,0 +1,25 @@
+.component{
+  display: flex;
+  flex-direction: column;
+  height: inherit;
+  overflow: hidden;
+  transition: all 200ms linear;
+}
+
+.contentSection{
+  flex-grow: 1;
+}
+
+.page{
+  width: 100%;
+}
+
+.stepperSection{
+  display: flex;
+  flex-direction: column;
+}
+
+.nextButton{
+  height: 4em;
+  width: 100%;
+}

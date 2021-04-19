@@ -1,7 +1,7 @@
 import WizardScreen, { WizardScreenProps } from "./WizardScreen";
 import { ButtonVariant } from "../basic/Button";
-import { action } from "@storybook/addon-actions";
 import { MuiTestWrapper } from "../../__test__/TestUtils";
+import Div100vh from "react-div-100vh";
 
 export default {
   component: WizardScreen,
@@ -9,23 +9,20 @@ export default {
 };
 
 const baseArgs: WizardScreenProps = {
-  imageUrl:
-    "https://images.unsplash.com/photo-1537944434965-cf4679d1a598?auto=format&fit=crop&w=400&h=250&q=60",
-  title: "איזה כיף שבאת!",
-  content:
+  pages: [
     "אפליקציה זו מיועדת עבור תורמי הטרומבוציטים של זכרון מנחם המגיעים העוזרים להציל חיים של ילדים חולי סרטן, וחולים במחלות קשות נוספות!",
-  currentStep: 2,
-  totalNumberOfSteps: 4,
+    "אפליקציה זו מיועדת עבור תורמי הטרומבוציטים של זכרון מנחם המגיעים העוזרים להציל חיים של ילדים חולי סרטן, וחולים במחלות קשות נוספות!",
+    "אפליקציה זו מיועדת עבור תורמי הטרומבוציטים של זכרון מנחם המגיעים העוזרים להציל חיים של ילדים חולי סרטן, וחולים במחלות קשות נוספות!",
+  ],
+
   buttonText: "אישור והמשך",
   buttonVariant: ButtonVariant.outlined,
-
-  onNext: action("onNext"),
-  onPrev: action("onPrev"),
-  onClick: action("onClick"),
 };
 export const FirstStep = (args: WizardScreenProps) => (
   <MuiTestWrapper>
-    <WizardScreen {...args} />
+    <Div100vh>
+      <WizardScreen {...args} />
+    </Div100vh>
   </MuiTestWrapper>
 );
 FirstStep.args = {
@@ -36,14 +33,18 @@ FirstStep.args = {
 
 export const MiddleStep = (args: WizardScreenProps) => (
   <MuiTestWrapper>
-    <WizardScreen {...args} />
+    <Div100vh>
+      <WizardScreen {...args} />
+    </Div100vh>
   </MuiTestWrapper>
 );
 MiddleStep.args = baseArgs;
 
 export const LastStep = (args: WizardScreenProps) => (
   <MuiTestWrapper>
-    <WizardScreen {...args} />
+    <Div100vh>
+      <WizardScreen {...args} />
+    </Div100vh>
   </MuiTestWrapper>
 );
 LastStep.args = {
