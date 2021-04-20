@@ -8,9 +8,6 @@ import classnames from "classnames";
 export interface WizardPage {
   content: React.ReactNode;
   buttonText?: string;
-
-  delayBeforeLeaveMS?: number;
-
   backgroundColor?: string;
   buttonClassName?: string;
   className?: string;
@@ -18,7 +15,6 @@ export interface WizardPage {
 const defaultWizardPageValues: WizardPage = {
   backgroundColor: "rgba(0,0,0,0)",
   content: undefined,
-  delayBeforeLeaveMS: 0,
 };
 
 function isInstanceOfWizardPage(obj: any): obj is WizardPage {
