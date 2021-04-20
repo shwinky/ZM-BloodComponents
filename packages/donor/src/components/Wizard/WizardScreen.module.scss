@@ -19,7 +19,11 @@
   flex-direction: column;
 }
 
-.nextButton{
-  height: 4em;
+.button{
+  height: 100%;
   width: 100%;
+}
+.buttonContainer{
+  height: 3em;
+  padding: 0 var(--layout-distance-normal,1em) var(--layout-distance-normal,1em);
 }

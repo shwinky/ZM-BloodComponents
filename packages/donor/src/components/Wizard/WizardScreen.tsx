@@ -147,7 +147,7 @@ export default function WizardScreen({
         title={text}
         variant={variant}
         isCentered={true}
-        className={classnames(styles.nextButton, buttonClassName)}
+        className={classnames(styles.button, buttonClassName)}
       />
     );
   }
@@ -188,7 +188,7 @@ export default function WizardScreen({
           handleNext={handleNextClick}
           handleBack={handleBackClick}
         />
-        {renderButton()}
+        <div className={styles.buttonContainer}>{renderButton()}</div>
       </nav>
     </div>
   );
