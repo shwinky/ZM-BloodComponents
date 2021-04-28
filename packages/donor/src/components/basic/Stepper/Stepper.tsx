@@ -18,14 +18,13 @@ export default function Stepper(props: StepperProps) {
   const componentClassName = classnames(styles.component, {
     [styles.disableButtons]: props.hideButtons,
   });
-
   return (
     <MobileStepper
       variant="dots"
       steps={props.numberOfSteps}
       position="static"
       activeStep={props.step}
-      className={componentClassName}
+      classes={{ dots: styles.dots, root: componentClassName }}
       dir={props.dir || "rtl"}
       nextButton={
         <Button

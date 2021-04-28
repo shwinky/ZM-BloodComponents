@@ -9,14 +9,13 @@
   display: flex;
   align-content: center;
 
-  :global .MuiMobileStepper-dots {
-    flex-grow: 1;
-    display: flex;
-    justify-content: center;
-    align-content: center;
-  }
 }
-
+.dots{
+  flex-grow: 1;
+  display: flex;
+  justify-content: center;
+  align-content: center;
+}
 .disableButtons {
   .button {
     display: none;
